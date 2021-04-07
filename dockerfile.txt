@@ -1,0 +1,18 @@
+From ubuntu
+
+RUN sudo apt-get update 
+RUN sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+RUN sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+RUN sudo apt update
+RUN sudo apt-cache policy docker-ce
+RUN sudo apt install docker-ce -y
+RUN sudo docker pull nginx
+RUN sudo docker pull mysql
+RUN sudo docker network create redeconteiners
+RUN sudo docker run -d --network=redeconteiners --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=RootPassword -e MYSQL_DATABASE=Backoffice -e MYSQL_USER=MainUser -e MYSQL_PASSWORD=MainPassword mysql &&\
+RUN sudo docker run -d --network=redeconteiners --name nginx -p 80:80 nginx
+RUN sudo docker exec -it mysql sh
+RUN apt-get update
+RUN apt install curl -y
+RUN curl 172.18.0.3
